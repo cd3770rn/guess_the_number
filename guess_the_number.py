@@ -6,9 +6,9 @@ too_low = 'Too Low!!!'
 too_high = 'too high'
 
 
-def configure_range():
+def configure_range(maxRange):
     '''Set the high and low values for the random number'''
-    return 1, 10
+    return 1, maxRange
 
 
 def generate_secret(low, high):
@@ -37,22 +37,34 @@ def check_guess(guess, secret):
 
 
 def main():
-
-    (low, high) = configure_range()
-    secret = generate_secret(low, high)
-
-    guesses = 0
     while True:
-        guess = get_guess()
-        result = check_guess(guess, secret)
-        if (result != correct):
-            guesses += 1
-        print(result)
+        while True:
+            try:
+                maxRange = int(input("What range should numbers be generated in? (1 - ?) \n"))
+            except ValueError:
+                print("Please try again.")
+            else:
+                break
+        (low, high) = configure_range(maxRange)
+        secret = generate_secret(low, high)
 
-        if result == correct:
-            print("Guesses: " + str(guesses))
+        guesses = 0
+        while True:
+            guess = get_guess()
+            result = check_guess(guess, secret)
+            if (result != correct):
+                guesses += 1
+            print(result)
+
+            if result == correct:
+                print("Guesses: " + str(guesses))
+                break
+        playAgain = input("Would you like to play again? (Y/N)\n")
+        if playAgain in ["Yes", "yes", "Y", "y"]:
+            print("==========")
+            continue
+        else:
             break
-
 
 if __name__ == '__main__':
     main()
